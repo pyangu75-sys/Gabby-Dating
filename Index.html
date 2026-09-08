@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bloom · dating</title>
+  <!-- Google Font & Font Awesome for realistic icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f7f0fc 0%, #e9def0 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      margin: 0;
+    }
+
+    /* main card – phone-like container */
+    .dating-app {
+      max-width: 390px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 42px;
+      box-shadow: 0 30px 60px -20px rgba(40, 20, 50, 0.4), 0 10px 25px -8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      padding: 20px 18px 20px 18px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      padding: 0 4px;
+    }
+
+    .app-header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #c44b9e, #a03d7a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .header-icons {
+      display: flex;
+      gap: 16px;
+      color: #6b4a6b;
+      font-size: 20px;
+    }
+
+    .header-icons i {
+      transition: 0.15s;
+      cursor: default;
+    }
+
+    .header-icons i:hover { color: #a03d7a; }
+
+    /* profile card — main UI */
+    .profile-card {
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 8px 28px -6px rgba(80, 40, 80, 0.12);
+      overflow: hidden;
+      margin-bottom: 18px;
+      transition: box-shadow 0.25s;
+      border: 1px solid rgba(220, 200, 230, 0.3);
+    }
+
+    .profile-image {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+      background: #dbc9e3;
+      transition: transform 0.2s;
+    }
+
+    .profile-info {
+      padding: 18px 20px 16px 20px;
+    }
+
+    .name-age {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .name-age h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #221122;
+      letter-spacing: -0.3px;
+    }
+
+    .name-age span {
+      font-size: 20px;
+      font-weight: 500;
+      color: #6f4a6f;
+      margin-left: 8px;
+    }
+
+    .age-badge {
+      background: #f0e6f5;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #4f2b4f;
+    }
+
+    .location {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6f5a6f;
+      font-size: 15px;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    .location i {
+      color: #b17ab1;
+      font-size: 14px;
+    }
+
+    .bio {
+      color: #332233;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 400;
+      background: #f8f2fa;
+      padding: 12px 16px;
+      border-radius: 24px;
+      margin: 6px 0 10px 0;
+      border: 1px solid #f0e4f2;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 6px 0;
+    }
+
+    .tag {
+      background: #f1e7f5;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4d2a4d;
+      letter-spacing: 0.2px;
+      border: 1px solid #e6d6ec;
+    }
+
+    .tag i {
+      margin-right: 5px;
+      font-size: 12px;
+      color: #a35f9e;
+    }
+
+    /* action buttons */
+    .action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 0 6px 0;
+      margin-bottom: 6px;
+    }
+
+    .action-btn {
+      background: #f7f0fa;
+      border: none;
+      width: 62px;
+      height: 62px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #482b48;
+      box-shadow: 0 4px 10px rgba(100, 60, 110, 0.08);
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .action-btn i {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.02));
+    }
+
+    .action-btn:hover {
+      transform: scale(1.05);
+      background: #efe4f5;
+      color: #361f36;
+      box-shadow: 0 8px 18px rgba(140, 70, 150, 0.15);
+    }
+
+    .action-btn:active {
+      transform: scale(0.94);
+    }
+
+    .btn-like {
+      background: #ffebf5;
+      color: #c44b7a;
+    }
+    .btn-like:hover { background: #fcdae9; color: #b33262; }
+
+    .btn-nope {
+      background: #f0ecf5;
+      color: #7a5a7a;
+    }
+    .btn-nope:hover { background: #e8dcee; color: #5f3f5f; }
+
+    .btn-super {
+      background: #d9c4f0;
+      color: #5b2e7a;
+    }
+    .btn-super:hover { background: #ccb3e8; color: #471f63; }
+
+    .action-btn i {
+      font-size: 30px;
+    }
+
+    /* bottom navigation */
+    .bottom-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 4px 2px 4px;
+      border-top: 1px solid #ede4f0;
+      margin-top: 14px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #9680a0;
+      font-size: 22px;
+      transition: 0.15s;
+      cursor: default;
+      padding: 6px 12px;
+      border-radius: 40px;
+    }
+
+    .nav-item.active {
+      color: #a34b8a;
+      font-weight: 600;
+    }
+
+    .nav-item i {
+      font-size: 24px;
+      margin-bottom: 2px;
+    }
+
+    .nav-item span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-item.active i { color: #b14b97; }
+
+    /* swipe hint (micro interaction) */
+    .swipe-hint {
+      text-align: center;
+      font-size: 13px;
+      color: #aa8aaa;
+      margin: 6px 0 0 0;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .swipe-hint i {
+      margin: 0 4px;
+      color: #b97fb9;
+    }
+
+    /* responsive tiny */
+    @media (max-width: 420px) {
+      .dating-app { padding: 14px; }
+      .profile-image { height: 260px; }
+    }
+
+    /* small animation for like */
+    .like-flash {
+      animation: flashLike 0.4s ease;
+    }
+    @keyframes flashLike {
+      0% { box-shadow: 0 0 0 0 rgba(196, 75, 158, 0.5); }
+      100% { box-shadow: 0 0 0 20px rgba(196, 75, 158, 0); }
+    }
+
+    .nope-flash {
+      animation: flashNope 0.35s ease;
+    }
+    @keyframes flashNope {
+      0% { box-shadow: 0 0 0 0 rgba(120, 80, 120, 0.4); }
+      100% { box-shadow: 0 0 0 20px rgba(120, 80, 120, 0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="dating-app" id="appContainer">
+
+    <!-- header -->
+    <div class="app-header">
+      <h1>bloom</h1>
+      <div class="header-icons">
+        <i class="far fa-bell"></i>
+        <i class="far fa-comment-dots"></i>
+      </div>
+    </div>
+
+    <!-- main profile card -->
+    <div class="profile-card" id="profileCard">
+      <img class="profile-image" id="profileImage" src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600" alt="profile" />
+      <div class="profile-info">
+        <div class="name-age">
+          <div>
+            <h2 id="profileName">Elena <span id="profileAge">27</span></h2>
+          </div>
+          <div class="age-badge">📍 4.2 km</div>
+        </div>
+        <div class="location">
+          <i class="fas fa-map-pin"></i> <span id="profileCity">Berlin · Mitte</span>
+        </div>
+        <div class="bio" id="profileBio">
+          <i class="fas fa-quote-left" style="opacity:0.4; margin-right:6px; font-size:12px;"></i> 
+          Art lover, coffee addict & sunset chaser. Let's explore hidden galleries.
+        </div>
+        <div class="tags" id="tagContainer">
+          <span class="tag"><i class="fas fa-palette"></i> Art</span>
+          <span class="tag"><i class="fas fa-mug-saucer"></i> Coffee</span>
+          <span class="tag"><i class="fas fa-camera"></i> Photography</span>
+          <span class="tag"><i class="fas fa-dog"></i> Dogs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- action buttons -->
+    <div class="action-bar">
+      <button class="action-btn btn-nope" id="nopeBtn" aria-label="nope"><i class="fas fa-times"></i></button>
+      <button class="action-btn btn-super" id="superBtn" aria-label="super like"><i class="fas fa-star"></i></button>
+      <button class="action-btn btn-like" id="likeBtn" aria-label="like"><i class="fas fa-heart"></i></button>
+    </div>
+
+    <!-- micro hint -->
+    <div class="swipe-hint">
+      <i class="fas fa-arrow-left"></i> swipe · tap <i class="fas fa-arrow-right"></i>
+    </div>
+
+    <!-- bottom navigation (realistic) -->
+    <div class="bottom-nav">
+      <div class="nav-item active"><i class="fas fa-fire"></i><span>Discover</span></div>
+      <div class="nav-item"><i class="far fa-heart"></i><span>Likes</span></div>
+      <div class="nav-item"><i class="far fa-comment"></i><span>Matches</span></div>
+      <div class="nav-item"><i class="far fa-user"></i><span>Profile</span></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ----- realistic profile data (5 profiles) -----
+      const profiles = [
+        {
+          name: 'Elena',
+          age: 27,
+          city: 'Berlin · Mitte',
+          bio: 'Art lover, coffee addict & sunset chaser. Let\'s explore hidden galleries.',
+          tags: ['Art', 'Coffee', 'Photography', 'Dogs'],
+          image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600'
+        },
+        {
+          name: 'Marcus',
+          age: 31,
+          city: 'Hamburg · Altona',
+          bio: 'Architecture nerd, cycling enthusiast & plant dad. Let\'s grab a matcha.',
+          tags: ['Architecture', 'Cycling', 'Matcha', 'Plants'],
+          image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'
+        },
+        {
+          name: 'Sofia',
+          age: 24,
+          city: 'Munich · Schwabing',
+          bio: 'Bilingual writer, cooking experiments & vintage vinyl. Love deep convos.',
+          tags: ['Writing', 'Cooking', 'Vinyl', 'Travel'],
+          image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=600'
+        },
+        {
+          name: 'Liam',
+          age: 29,
+          city: 'Cologne · Ehrenfeld',
+          bio: 'Software engineer with soul. Jazz piano, urban gardening & poetry.',
+          tags: ['Jazz', 'Gardening', 'Poetry', 'Tech'],
+          image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600'
+        },
+        {
+          name: 'Mila',
+          age: 26,
+          city: 'Vienna · Neubau',
+          bio: 'Dance teacher, macaron baker & sunset painter. Let’s waltz?',
+          tags: ['Dance', 'Baking', 'Painting', 'Vienna'],
+          image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600'
+        }
+      ];
+
+      // DOM refs
+      const profileImg = document.getElementById('profileImage');
+      const profileName = document.getElementById('profileName');
+      const profileAge = document.getElementById('profileAge');
+      const profileCity = document.getElementById('profileCity');
+      const profileBio = document.getElementById('profileBio');
+      const tagContainer = document.getElementById('tagContainer');
+      const profileCard = document.getElementById('profileCard');
+      const likeBtn = document.getElementById('likeBtn');
+      const nopeBtn = document.getElementById('nopeBtn');
+      const superBtn = document.getElementById('superBtn');
+
+      let currentIndex = 0;
+
+      // helper to render profile by index
+      function renderProfile(index) {
+        const p = profiles[index % profiles.length];
+        // update image with fade effect (small transition)
+        profileImg.style.transition = 'opacity 0.2s';
+        profileImg.style.opacity = '0.6';
+        setTimeout(() => {
+          profileImg.src = p.image;
+          profileImg.alt = p.name;
+          profileImg.style.opacity = '1';
+        }, 50);
+
+        // name & age
+        profileName.innerHTML = `${p.name} <span id="profileAge">${p.age}</span>`;
+        // city
+        profileCity.textContent = p.city;
+        // bio
+        profileBio.innerHTML = `<i class="fas fa-quote-left" style="opacity:0.4; margin-right:6px; font-size:12px;"></i> ${p.bio}`;
+        // tags
+        tagContainer.innerHTML = p.tags.map(t => 
+          `<span class="tag"><i class="fas fa-${getTagIcon(t)}"></i> ${t}</span>`
+        ).join('');
+      }
+
+      // simple icon mapping for tags (realistic variety)
+      function getTagIcon(tag) {
+        const map = {
+          'Art': 'palette',
+          'Coffee': 'mug-saucer',
+          'Photography': 'camera',
+          'Dogs': 'dog',
+          'Architecture': 'building',
+          'Cycling': 'bicycle',
+          'Matcha': 'leaf',
+          'Plants': 'seedling',
+          'Writing': 'pen-fancy',
+          'Cooking': 'utensils',
+          'Vinyl': 'music',
+          'Travel': 'plane',
+          'Jazz': 'headphones',
+          'Gardening': 'spa',
+          'Poetry': 'feather',
+          'Tech': 'laptop',
+          'Dance': 'shoe-prints',
+          'Baking': 'cake-candles',
+          'Painting': 'paintbrush',
+          'Vienna': 'city'
+        };
+        return map[tag] || 'circle';
+      }
+
+      // next profile (with animation reset)
+      function nextProfile() {
+        currentIndex = (currentIndex + 1) % profiles.length;
+        renderProfile(currentIndex);
+        // reset card flash
+        profileCard.classList.remove('like-flash', 'nope-flash');
+        // tiny haptic-like feedback
+        profileCard.style.transition = 'transform 0.1s';
+        profileCard.style.transform = 'scale(0.98)';
+        setTimeout(() => { profileCard.style.transform = 'scale(1)'; }, 120);
+      }
+
+      // like action
+      function handleLike() {
+        profileCard.classList.remove('nope-flash');
+        profileCard.classList.add('like-flash');
+        // realistic feedback: heart pop
+        likeBtn.style.transform = 'scale(1.4)';
+        setTimeout(() => { likeBtn.style.transform = 'scale(1)'; }, 180);
+        // move to next after short delay
+        setTimeout(() => { nextProfile(); }, 300);
+      }
+
+      // nope action
+      function handleNope() {
+        profileCard.classList.remove('like-flash');
+        profileCard.classList.add('nope-flash');
+        nopeBtn.style.transform = 'scale(1.3)';
+        setTimeout(() => { nopeBtn.style.transform = 'scale(1)'; }, 180);
+        setTimeout(() => { nextProfile(); }, 280);
+      }
+
+      // super like (with extra sparkle)
+      function handleSuper() {
+        profileCard.classList.remove('like-flash', 'nope-flash');
+        profileCard.style.boxShadow = '0 0 0 4px #c77dda, 0 8px 28px -4px #b36bbd';
+        superBtn.style.transform = 'scale(1.5)';
+        setTimeout(() => {
+          superBtn.style.transform = 'scale(1)';
+          profileCard.style.boxShadow = '0 8px 28px -6px rgba(80, 40, 80, 0.12)';
+        }, 250);
+        // move to next after a beat
+        setTimeout(() => { nextProfile(); }, 400);
+      }
+
+      // add event listeners
+      likeBtn.addEventListener('click', handleLike);
+      nopeBtn.addEventListener('click', handleNope);
+      superBtn.addEventListener('click', handleSuper);
+
+      // keyboard support (for demo)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'l' || e.key === 'L') handleLike();
+        else if (e.key === 'ArrowLeft' || e.key === 'n' || e.key === 'N') handleNope();
+        else if (e.key === 'ArrowUp' || e.key === 's' || e.key === 'S') handleSuper();
+      });
+
+      // swipe simulation (click on card edges) – subtle
+      profileCard.addEventListener('click', (e) => {
+        const rect = profileCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x < rect.width * 0.3) handleNope();
+        else if (x > rect.width * 0.7) handleLike();
+        // else middle click – do nothing (or super? but we keep it clean)
+      });
+
+      // initial render
+      renderProfile(0);
+
+      // small hint: show instructions in console (optional)
+      console.log('💡 Bloom · swipe left (nope) / right (like) · keyboard: ← → ↑');
+    })();
+  </script>
+</body>
+  </html>
